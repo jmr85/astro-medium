@@ -4,18 +4,28 @@ import BlogPost from '../../layouts/BlogPost.astro';
 import { render } from 'astro:content';
 
 export async function getStaticPaths() {
-	const posts = await getCollection('blog');
-	return posts.map((post) => ({
-		params: { slug: post.id },
-		props: post,
-	}));
+    const blogPosts = await getCollection('blog');
+    const mediumPosts = await getCollection('medium') || [];
+    const posts = [...blogPosts, ...mediumPosts]; 
+
+    const paths = posts.map((post) => ({
+        params: { slug: post.id  }, // Codificar slug
+        props: post,
+    }));
+
+    console.log('Generated paths:', paths);
+    return paths;
 }
-type Props = CollectionEntry<'blog'>;
+
+type Props = CollectionEntry<'blog'> | CollectionEntry<'medium'>;
 
 const post = Astro.props;
 const { Content } = await render(post);
 ---
 
 <BlogPost {...post.data}>
-	<Content />
+	<!-- renderiza el contenido Markdown local. -->
+    <Content />
+    <!-- renderiza el contenido del post de Medium directamente como HTML. -->
+    <Fragment set:html={post.collection === "medium" && post.data.content } />
 </BlogPost>
