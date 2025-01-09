@@ -28,4 +28,16 @@ const { Content } = await render(post);
     <Content />
     <!-- renderiza el contenido del post de Medium directamente como HTML. -->
     <Fragment set:html={post.collection === "medium" && post.data.content } />
+    <!-- renderiza un enlace al post de Medium. -->
+    <a 
+        href={post.collection === "medium" 
+        ? 
+            post.data.websiteUrl 
+        : 
+            undefined
+        } 
+        target="_blank"
+    >
+        {post.collection === "medium" ? post.data.websiteUrl : undefined}
+    </a>
 </BlogPost>
