@@ -8,6 +8,7 @@ import vercel from '@astrojs/vercel/static';
 export default defineConfig({
 	site: 'https://example.com',
 	integrations: [mdx(), sitemap()],
+	output: 'static',
 	adapter: vercel({
 		imageService: true,
 		webAnalytics: {
