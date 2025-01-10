@@ -14,7 +14,7 @@ export default defineConfig({
 			enabled: true,
 		},
 		isr: {
-			expiration: 3600,
+			expiration: 120, // 2 minutos
 		},
 	}),
 });
