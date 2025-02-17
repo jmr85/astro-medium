@@ -22,14 +22,17 @@ const medium = defineCollection({
         const feed = await parser.parseURL('https://medium.com/feed/@juan.martin.ruiz');
 
         return feed.items.map((item) =>{ 
-            // slug sanitizado basado en el link o GUID
-            const idSource = item.guid || item.link || '';
-            const sanitizedId = idSource
-                .replace(/https?:\/\//, '') // Elimina el "http://" o "https://"
-                .replace(/\//g, '-') // Reemplaza "/" con "-"
-                .replace(/[^a-zA-Z0-9\-]/g, ''); // Elimina caracteres no válidos
+            // sanitized slug based on link or GUID
+            const idSource = item.link || '';
+            const urlObj = new URL(idSource);
+            const pathSegments = urlObj.pathname.split('/');
+            const lastSegment = pathSegments.pop() || '';
+
+            // We remove the final hexadecimal part and generate the slug
+            const slug = lastSegment.replace(/-[a-f0-9]+$/i, '');
+
             return  {
-                id: sanitizedId,
+                id: slug,
                 title: item.title,
                 description: item.contentSnippet || item.content || '',
                 pubDate: new Date(item?.pubDate || ''),

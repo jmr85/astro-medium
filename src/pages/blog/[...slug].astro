@@ -13,31 +13,28 @@ export async function getStaticPaths() {
         props: post,
     }));
 
-    console.log('Generated paths:', paths);
     return paths;
 }
 
 type Props = CollectionEntry<'blog'> | CollectionEntry<'medium'>;
 
 const post = Astro.props;
+
+const isMedium = post.collection === "medium";
+
 const { Content } = await render(post);
 ---
 
 <BlogPost {...post.data}>
-	<!-- renderiza el contenido Markdown local. -->
+	<!-- renders local Markdown content -->
     <Content />
-    <!-- renderiza el contenido del post de Medium directamente como HTML. -->
-    <Fragment set:html={post.collection === "medium" && post.data.content } />
-    <!-- renderiza un enlace al post de Medium. -->
+    <!-- renders the Medium post content directly as HTML -->
+    <Fragment set:html={isMedium && post.data.content } />
+    <!-- renders a link to the Medium post at the end of the content -->
     <a 
-        href={post.collection === "medium" 
-        ? 
-            post.data.websiteUrl 
-        : 
-            undefined
-        } 
+        href={isMedium && post.data.websiteUrl} 
         target="_blank"
     >
-        {post.collection === "medium" ? post.data.websiteUrl : undefined}
+        {isMedium && post.data.websiteUrl}
     </a>
 </BlogPost>
