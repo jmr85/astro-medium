@@ -36,9 +36,6 @@ const medium = defineCollection({
                 updatedDate: new Date(item?.isoDate || ''),
                 tags: item.categories || [],
                 websiteUrl: item.link,
-                author: {
-                    name: feed.title || 'Unknown Author',
-                },
                 content: item['content:encoded'] || item.content || '',
                 heroImage: (item['content:encoded'] || '').match(/<img[^>]*src="([^"]*)"/)?.[1] || null, // Extrae la URL de la imagen del contenido
             }

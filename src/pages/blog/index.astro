@@ -99,7 +99,10 @@ const posts = [...astroPosts, ...medium]
 					{
 						posts.map((post) => (
 							<li>
-								<a href={`/blog/${post.id}/`}>
+								<a 
+									href={post.collection === "medium" ? post.data.websiteUrl : `/blog/${post.id}/`}
+									target={post.collection === "medium" ? "_blank" : "_self"}
+								>
 									<img width={720} height={360} src={post.data.heroImage} alt="" />
 									<h4 class="title">{post.data.title}</h4>
 									<p class="date">
